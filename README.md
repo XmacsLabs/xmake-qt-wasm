@@ -10,6 +10,8 @@ xmake update -s dev
 ```
 cd ~
 python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
+
+# cd path/to/this/repo
 xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
 ```
 
@@ -19,6 +21,8 @@ If `/usr/bin/python` is not available, execute `sudo ln -s /usr/bin/python3 /usr
 ```
 cd ~
 python3 -m aqt install-qt linux desktop 6.5.2 wasm_singlethread  -m qtimageformats --autodesktop
+
+# cd path/to/this/repo
 QT6=true xmake config -p wasm --qt=~/6.5.2/wasm_singlethread/ -vD --yes
 ```
 
