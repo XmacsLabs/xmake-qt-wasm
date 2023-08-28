@@ -1,13 +1,11 @@
 add_rules("mode.debug", "mode.release")
 
-if is_plat("mingw") and is_host("windows") then
-    add_requires("mingw-w64 8.1.0")
-    set_toolchains("mingw@mingw-w64")
-    add_requires("qt5widgets 5.15.2")
-end
-
 if is_plat("wasm") then
-    add_requires("emscripten 1.39.8")
+    if os.getenv("QT6") then
+        add_requires("emscripten 3.1.25")
+    else
+        add_requires("emscripten 1.39.8")
+    end
     set_toolchains("emcc@emscripten")
 end
 
