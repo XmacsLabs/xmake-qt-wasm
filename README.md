@@ -39,6 +39,7 @@ python3 -m http.server -d build/wasm/wasm32/release/
 ## Arch Linux
 ```
 yay -S xmake emscripten python-aqtinstall
+sudo xmake update --root -s dev 
 python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
 xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
 xmake build
