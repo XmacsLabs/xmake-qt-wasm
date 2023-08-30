@@ -1,4 +1,5 @@
 # Qt on WASM using xmake
+
 ## Install xmake
 After the installation of xmake, we need to switch to the latest xmake on dev branch.
 ```
@@ -35,3 +36,12 @@ xmake build
 python3 -m http.server -d build/wasm/wasm32/release/
 ```
 
+## Arch Linux
+```
+yay -S xmake emscripten python-aqtinstall
+python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
+xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
+xmake build
+python3 -m http.server -d build/wasm/wasm32/release/
+```
+If you cannot install aqt via `yay -S python-aqtinstall`, you can install it manually by pip.
