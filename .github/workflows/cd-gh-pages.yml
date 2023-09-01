@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo DEBIAN_FRONTEND=noninteractive apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc aqtinstall \
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc \
               fonts-noto-cjk libcurl4-openssl-dev libfreetype-dev \
               ${{matrix.qt_pkg}}
       - uses: actions/checkout@v3
@@ -50,6 +50,9 @@ jobs:
             ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
             ${{ runner.workspace }}/build/.build_cache
           key: ${{ runner.os }}-xmake-qt${{ matrix.qt_ver }}-${{ hashFiles('**/xmake.lua') }}
+
+      - name: install aqt
+        run: pip install -U pip && pip install aqtinstall
 
       - name: config aqt
         run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
