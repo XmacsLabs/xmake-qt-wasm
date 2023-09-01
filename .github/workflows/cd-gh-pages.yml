@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo DEBIAN_FRONTEND=noninteractive apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc \
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc aqtinstall \
               fonts-noto-cjk libcurl4-openssl-dev libfreetype-dev \
               ${{matrix.qt_pkg}}
       - uses: actions/checkout@v3
