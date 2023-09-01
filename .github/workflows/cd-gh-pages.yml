@@ -57,6 +57,9 @@ jobs:
       - name: config aqt
         run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
 
+      - name: install emscripten
+        run: xrepo install emscripten
+
       - name: config xmake
         run: xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
       
