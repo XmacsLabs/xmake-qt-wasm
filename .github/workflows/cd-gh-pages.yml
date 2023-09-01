@@ -41,7 +41,7 @@ jobs:
         run: xmake repo --update
 
       - name: xmake update -s dev
-        run: sudo xmake update --root -s dev
+        run: xmake update -s dev
 
       - name: cache
         uses: actions/cache@v3
