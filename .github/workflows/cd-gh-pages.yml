@@ -50,9 +50,6 @@ jobs:
             ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
             ${{ runner.workspace }}/build/.build_cache
           key: ${{ runner.os }}-xmake-qt${{ matrix.qt_ver }}-${{ hashFiles('**/xmake.lua') }}
-      
-      - name: config python
-        run: sudo ln -s /usr/bin/python3 /usr/bin/python
 
       - name: config aqt
         run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
