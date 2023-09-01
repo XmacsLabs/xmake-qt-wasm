@@ -1,0 +1,69 @@
+name: CD for gh-pages
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    if: always()
+    continue-on-error: true
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+        - qt_pkg: qtbase5-dev libqt5svg5-dev qt5-image-formats-plugins
+          qt_ver: 5
+
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo DEBIAN_FRONTEND=noninteractive apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc \
+              fonts-noto-cjk libcurl4-openssl-dev libfreetype-dev \
+              ${{matrix.qt_pkg}}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+
+      - name: set XMAKE_GLOBALDIR
+        run: echo "XMAKE_GLOBALDIR=${{ runner.workspace }}/xmake-global" >> $GITHUB_ENV
+
+      - uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: v2.8.2
+          actions-cache-folder: '.xmake-cache'
+
+      - name: xmake repo --update
+        run: xmake repo --update
+
+      - name: xmake update -s dev
+        run: sudo xmake update --root -s dev
+
+      - name: cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
+            ${{ runner.workspace }}/build/.build_cache
+          key: ${{ runner.os }}-xmake-qt${{ matrix.qt_ver }}-${{ hashFiles('**/xmake.lua') }}
+      
+      - name: config python
+        run: sudo ln -s /usr/bin/python3 /usr/bin/python
+
+      - name: config aqt
+        run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
+
+      - name: config xmake
+        run: xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
+      
+      - name: BUILD
+        run: xmake build
+
+      - name: push to gh-pages
+        run: cd build/wasm/wasm32/release && git init -b gh-pages && git remote add origin git@github.com:XmacsLabs/xmake-qt-wasm.git && git add . && git commit -m "CD for gh-pages" && git push -f origin gh-pages
+
+
