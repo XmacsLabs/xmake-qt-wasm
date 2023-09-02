@@ -58,7 +58,7 @@ jobs:
           extra: '--autodesktop'
 
       - name: config xmake
-        run: xmake config -p wasm --qt={{ runner.workspace }}/5.15.2/wasm_32 -vD --yes
+        run: xmake config -p wasm --qt=${{ runner.workspace }}/5.15.2/wasm_32 -vD --yes
       
       - name: BUILD
         run: xmake build
