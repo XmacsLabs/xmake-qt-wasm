@@ -47,16 +47,22 @@ jobs:
       - name: install aqt
         run: pip install -U pip && pip install aqtinstall
 
-      - name: config aqt
+      - name: install Qt
         run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
 
       - name: config xmake
-        run: xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
+        run: xmake config -p wasm --qt=/home/runner/work/xmake-qt-wasm/xmake-qt-wasm/5.15.2/wasm_32 -vD --yes
       
       - name: BUILD
         run: xmake build
 
-      - name: push to gh-pages
-        run: cd build/wasm/wasm32/release && git init -b gh-pages && git remote add origin git@github.com:XmacsLabs/xmake-qt-wasm.git && git add . && git commit -m "CD for gh-pages" && git push -f origin gh-pages
+      - name: Push
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: build # The branch name where you want to push the assets
+          FOLDER: build/wasm/wasm32/release # The directory where your assets are generated
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub will automatically add this - you don't need to bother getting a token
+          MESSAGE: "Build: ({sha}) {msg}" # The commit message
 
 
