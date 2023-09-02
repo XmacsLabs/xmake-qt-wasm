@@ -36,13 +36,6 @@ jobs:
       - name: xmake repo --update
         run: xmake repo --update
 
-      - name: cache
-        uses: actions/cache@v3
-        with:
-          path: |
-            ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
-            ${{ runner.workspace }}/build/.build_cache
-          key: ${{ runner.os }}-xmake-qt-${{ hashFiles('**/xmake.lua') }}
 
       - name: Install Qt wasm
         uses: jurplel/install-qt-action@v3
