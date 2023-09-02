@@ -9,11 +9,11 @@ xmake update -s dev
 ## xmake config
 ### Config for Qt 5
 ```
-cd ~
+cd path/to/this/repo
 python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
 
 # cd path/to/this/repo
-xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
+xmake config -p wasm --qt=./5.15.2/wasm_32/ -vD --yes
 ```
 
 If `/usr/bin/python` is not available, execute `sudo ln -s /usr/bin/python3 /usr/bin/python` first.
