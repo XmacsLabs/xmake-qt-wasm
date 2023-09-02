@@ -44,14 +44,21 @@ jobs:
             ${{ runner.workspace }}/build/.build_cache
           key: ${{ runner.os }}-xmake-qt-${{ hashFiles('**/xmake.lua') }}
 
-      - name: install aqt
-        run: pip install -U pip && pip install aqtinstall
-
-      - name: install Qt
-        run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
+      - name: Install Qt wasm
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: 5.15.2
+          arch: wasm_32
+          host: 'linux'
+          target: 'desktop'
+          cache: 'true'
+          # workarounds in https://github.com/jurplel/install-qt-action/issues/181
+          aqtversion: '==3.1.*'
+          py7zrversion: '==0.20.*'
+          extra: '--autodesktop'
 
       - name: config xmake
-        run: xmake config -p wasm --qt=/home/runner/work/xmake-qt-wasm/xmake-qt-wasm/5.15.2/wasm_32 -vD --yes
+        run: xmake config -p wasm --qt={{ runner.workspace }}/5.15.2/wasm_32 -vD --yes
       
       - name: BUILD
         run: xmake build
