@@ -13,18 +13,11 @@ jobs:
     continue-on-error: true
     strategy:
       fail-fast: true
-      matrix:
-        include:
-        - qt_pkg: qtbase5-dev libqt5svg5-dev qt5-image-formats-plugins
-          qt_ver: 5
 
     steps:
       - name: Install dependencies
         run: |
           sudo DEBIAN_FRONTEND=noninteractive apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y gcc \
-              fonts-noto-cjk libcurl4-openssl-dev libfreetype-dev \
-              ${{matrix.qt_pkg}}
       - uses: actions/checkout@v3
         with:
           fetch-depth: 1
@@ -37,11 +30,11 @@ jobs:
           xmake-version: v2.8.2
           actions-cache-folder: '.xmake-cache'
 
-      - name: xmake repo --update
-        run: xmake repo --update
-
       - name: xmake update -s dev
         run: xmake update -s dev
+
+      - name: xmake repo --update
+        run: xmake repo --update
 
       - name: cache
         uses: actions/cache@v3
@@ -49,16 +42,13 @@ jobs:
           path: |
             ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
             ${{ runner.workspace }}/build/.build_cache
-          key: ${{ runner.os }}-xmake-qt${{ matrix.qt_ver }}-${{ hashFiles('**/xmake.lua') }}
+          key: ${{ runner.os }}-xmake-qt-${{ hashFiles('**/xmake.lua') }}
 
       - name: install aqt
         run: pip install -U pip && pip install aqtinstall
 
       - name: config aqt
         run: python3 -m aqt install-qt linux desktop 5.15.2 wasm_32 --autodesktop
-
-      - name: install emscripten
-        run: sudo apt-get install -y emscripten
 
       - name: config xmake
         run: xmake config -p wasm --qt=~/5.15.2/wasm_32/ -vD --yes
