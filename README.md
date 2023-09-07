@@ -29,7 +29,7 @@ QT6=true xmake config -p wasm --qt=~/6.5.2/wasm_singlethread/ -vD --yes
 
 ## xmake build
 ```
-xmake build
+QT6=true xmake build
 ```
 ## view in browser
 ```

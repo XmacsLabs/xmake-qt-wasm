@@ -15,5 +15,9 @@ target("app")
     else
         add_rules("qt.widgetapp")
     end
-    add_frameworks("QtGui", "QtCore")
+    if os.getenv("QT6") then
+        add_frameworks("QtGui", "QtCore", "QtWidgets", "QWasmIntegrationPlugin")
+    else
+        add_frameworks("QtGui", "QtCore", "QtWidgets")
+    end
     add_files("src/*.cpp")
