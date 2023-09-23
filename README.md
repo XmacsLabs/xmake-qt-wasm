@@ -6,7 +6,11 @@ After the installation of xmake, we need to switch to the latest xmake on dev br
 xmake update -s dev
 ```
 
-If that does not work, you can try `sudo xmake update --root -s dev`
+If that does not work, you can try 
+
+```bash
+sudo xmake update --root -s dev
+```
 
 ## xmake config
 ### Config for Qt 5
